@@ -1,0 +1,51 @@
+CREATE TRIGGER updateTeamPoints AFTER UPDATE 
+ON pilot FOR each ROW EXECUTE PROCEDURE sumaPuntsEquip();
+
+CREATE FUNCTION sumaPuntsEquip() RETURNS INTEGER AS '
+BEGIN 
+ 	UPDATE equip SET punts_campionat=(SELECT SUM(punts_campionat) 
+					  FROM pilot p 
+					  INNER JOIN equip e 
+					  ON p.nom-eq=e.nom-eq);
+
+END;
+' LANGUAGE 'plpgsql';	
+
+
+---------------------------------------------------------------------------------------------
+
+CREATE TABLE equip (
+	nom_eq INTEGER PRIMARY KEY,
+	director VARCHAR(255),
+	punts_campionat INTEGER
+);
+
+CREATE TABLE pilot (
+	dorsal INTEGER PRIMARY KEY,
+	nom VARCHAR(255),
+	edat INTEGER,
+	punts_campionat INTEGER,
+	nom_eq VARCHAR(255) FOREIGN KEY REFERENCES equip(nom-eq)
+);
+
+CREATE TABLE cursa (
+	num_cursa INTEGER PRIMARY KEY,
+	lloc VARCHAR(255),
+	circuit VARCHAR(255),
+	voltes INTEGER,
+	hora_inici VARCHAR(255),
+	hora_final VARCHAR(255),
+	data VARCHAR(255) FOREIGN KEY REFERENCES data(data),
+	dorsal_guanyador INTEGER FOREIGN KEY REFERENCES pilot(dorsal)
+);
+
+CREATE TABLE participa (
+	dorsal INTEGER PRIMARY KEY FOREIGN KEY REFERENCES pilot(dorsal),
+	num_cursa INTEGER PRIMARY KEY FOREIGN KEY REFERENCES cursa(num_cursa)
+);
+
+CREATE TABLE data (
+	data VARCHAR(255) PRIMARY KEY
+);
+ 
+	 
