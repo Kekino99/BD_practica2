@@ -1,6 +1,3 @@
-CREATE TRIGGER updateTeamPoints AFTER UPDATE 
-ON pilot FOR each ROW EXECUTE PROCEDURE sumaPuntsEquip();
-
 CREATE FUNCTION sumaPuntsEquip() RETURNS INTEGER AS '
 BEGIN 
  	UPDATE equip SET punts_campionat=(SELECT SUM(punts_campionat) 
@@ -11,6 +8,8 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';	
 
+CREATE TRIGGER updateTeamPoints AFTER UPDATE 
+ON pilot FOR each ROW EXECUTE PROCEDURE sumaPuntsEquip();
 
 ---------------------------------------------------------------------------------------------
 
@@ -47,5 +46,74 @@ CREATE TABLE participa (
 CREATE TABLE data (
 	data VARCHAR(255) PRIMARY KEY
 );
+ 
+INSERT INTO equip (nom_eq,director, punts_campionat) 
+VALUES ("Honda","Jaume",70);
+INSERT INTO equip (nom_eq,director, punts_campionat) 
+VALUES ("Yamaha","Miquel",55);
+INSERT INTO equip (nom_eq,director, punts_campionat) 
+VALUES ("Suzuki","Paco",35);
+INSERT INTO equip (nom_eq,director, punts_campionat) 
+VALUES ("Ducati","Luigi",45);
+
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (93,"Marc Marquez", 25, 40, "Honda");
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (24,"Pedrosa", 40, 30, "Honda");
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (46,"Valentino Rossi", 38, 35, "Yamaha");
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (26,"Maverik Viñales", 23, 20, "Yamaha");
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (49"Aleix Espargaro", 25, 30, "Suzuki");
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (24,"Manolo", 83, 5, "Suzuki");
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (34,"Andrea Dovicioso", 25, 20, "Ducati");
+INSERT INTO pilot (dorsal,nom,edat,punts_campionat,nom_eq) 
+VALUES (66,"Jorge Lorenzo", 34, 25, "Ducati");
+
+INSERT INTO cursa (num_cursa, lloc, circuit, voltes, hora_inici, hora_final, data, dorsal_guanyador)
+VALUES (14, "Valencia", "Cheste", 22, "12:00", "13:30", "17-12-2018", 93);
+INSERT INTO cursa (num_cursa, lloc, circuit, voltes, hora_inici, hora_final, data, dorsal_guanyador)
+VALUES (14, "Barcelona", "Circuit de Catalunya", 20, "12:00", "13:30", "11-4-2018", 24);
+
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (93, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (24, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (46, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (26, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (49, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (24, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (34, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (66, 22);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (93, 20);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (24, 20);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (46, 20);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (26, 20);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (49, 20);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (24, 20);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (34, 20);
+INSERT INTO participia (dorsal, num_cursa)
+VALUES (66, 20);
+
+INSERT INTO data (data)
+VALUES ("17-12-2018");
+INSERT INTO data (data)
+VALUES ("11-4-2018");
  
 	 
